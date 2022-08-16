@@ -16,6 +16,9 @@
             display: inline-block;
             color: white;
         }
+        .reserved{
+            background-color:red;
+        }
     </style>
 
 </head>
@@ -23,80 +26,108 @@
 <body class="w3-white ">
     <?php
     include('header.php');
+    $_SESSION['movie_id'] = 1;
+    $_SESSION['user_id'] = 1;
     ?>
     <div class="w3-white w3-padding-16">
-        <script>
+        <div class="w3-center">
+            <?php 
+                $q_seat = "select * from seat";
+                echo $conn->error;
+                $result = mysqli_query($con,$q_seat);
+                while($seat = mysqli_fetch_assoc($result)){
+                
+                    // print_r($seat)
+                    $q_reserever = "select * from reserved_seat where movie_id = ".$_SESSION['movie_id']." and seat_id = ".$seat['id'];
+                    $r_result = mysqli_query($con,$q_reserever);
+                    // echo $q_reserever;
+                    // echo $con->error;
+                    if(mysqli_num_rows($r_result)==0){
+            ?>
+                
+                    <div class="seatbox" id="">
+                        <?= $seat['name'] ?>
+                    </div>
+                    <?php 
+                    }else{?>
+                        <div class="seatbox reserved" id="">
+                        <?= $seat['name'] ?>
+                    </div>
+                    <?php
+                    }
+                    ?>
+            <?php
+                }
+            ?>
+        </div>
+        <!-- <script>
             var rows = "ABCDEF";
             for (i = 0; i < rows.length; i++) {
                 document.write('<div class="w3-center">');
                 for (j = 1; j <= 14; j++) {
-                    document.write('<div class="seatbox" id="', rows.charAt(i), j, '"',
-                        'onmouseover="this.style.backgroundColor=\'orange\';"',
-                        'onmouseout="restoreColor(this.id);"',
-                        'onclick="toggle(this.id);alert(this.id);"',
-                        '>', rows.charAt(i), j,
+                    document.write('', rows.charAt(i), j,
                         '</div>');
 
                 }
                 document.write('</div>');
             }
-        </script>
+        </script> -->
     </div>
-    <form class="w3-white" action="confirmation.php" method="POST">
+    <form class="w3-white" action="confirmseat.php" method="POST">
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Green=available&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Red=reserved</p>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected seats:<span id="selectedSeatsID"></span></p>
-        <input type="hidden" name="seatsInForm" id="seatsInForm" value="">
-        <input type="text" name="seat" placeholder="input seat number">
-        <input type="hidden" name="movie" value="<?= $_SESSION['movie'] ?>">
+        <input type="text" name="seat_name" placeholder="input seat number">
+        <input type="hidden" name="movie_id" value="<?= $_SESSION['movie_id'] ?>">
+        <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="w3-button w3-white w3-border w3-border-red w3-round-large" type="submit" name="submitbutton" id="submitbutton">Confirm</button>
     </form>
     <script>
-        var selectedseats = [];
+    //     var selectedseats = [];
 
-        function restoreColor(seatId) {
-            var a = selectedseats.indexOf(seatId);
-            if (a == -1) {
-                document.getElementById(seatId).style.backgroundColor = 'green';
+    //     function restoreColor(seatId) {
+    //         var a = selectedseats.indexOf(seatId);
+    //         if (a == -1) {
+    //             document.getElementById(seatId).style.backgroundColor = 'green';
 
-            } else {
+    //         } else {
 
-                document.getElementById(seatId).style.backgroundColor = 'red';
-            }
-        }
+    //             document.getElementById(seatId).style.backgroundColor = 'red';
+    //         }
+    //     }
 
-        function toggle(seatId) {
-            var a = selectedseats.indexOf(seatId);
-            if (a == -1) {
-                add(seatId);
-            } else {
-                cancel(seatId);
-            }
-        }
+    //     function toggle(seatId) {
+    //         var a = selectedseats.indexOf(seatId);
+    //         if (a == -1) {
+    //             add(seatId);
+    //         } else {
+    //             cancel(seatId);
+    //         }
+    //     }
 
-        function add(seatId) {
-            selectedseats.push(seatId);
-            updateSelectedSeats();
-            document.getElementById(seatId).style.backgroundColor = 'red';
-            document.getElementById(seatId).style.textDecoration = 'line-through';
-        }
+    //     function add(seatId) {
+    //         selectedseats.push(seatId);
+    //         updateSelectedSeats();
+    //         document.getElementById(seatId).style.backgroundColor = 'red';
+    //         document.getElementById(seatId).style.textDecoration = 'line-through';
+    //     }
 
-        function cancel(seatId) {
-            var a = selectedseats.indexOf(seatId);
-            selectedseats.splice(a, 1);
-            updateSelectedSeats();
-            document.getElementById(seatId).style.backgroundColor = 'green';
-            document.getElementById(seatId).style.textDecoration = '';
-        }
+    //     function cancel(seatId) {
+    //         var a = selectedseats.indexOf(seatId);
+    //         selectedseats.splice(a, 1);
+    //         updateSelectedSeats();
+    //         document.getElementById(seatId).style.backgroundColor = 'green';
+    //         document.getElementById(seatId).style.textDecoration = '';
+    //     }
 
-        function updateSelectedSeats() {
-            var s = "";
-            selectedseats.sort();
-            for (x of selectedseats) {
-                s += x + ' ';
-            }
-            document.getElementById('selectedSeatsID').innerHTML = s;
-            document.getElementById('seatsInForm').value = s;
-        }
+    //     function updateSelectedSeats() {
+    //         var s = "";
+    //         selectedseats.sort();
+    //         for (x of selectedseats) {
+    //             s += x + ' ';
+    //         }
+    //         document.getElementById('selectedSeatsID').innerHTML = s;
+    //         document.getElementById('seatsInForm').value = s;
+    //     }
     </script>
 </body>
 
