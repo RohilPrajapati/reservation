@@ -26,7 +26,10 @@
 <body class="w3-white ">
     <?php
     include('header.php');
+    // jun movie ma click gara tyo movie to id halde yesma
     $_SESSION['movie_id'] = 1;
+
+    // yo login gardai set gar so that every reserver user_id na hos ani hatta yo
     $_SESSION['user_id'] = 1;
     ?>
     <div class="w3-white w3-padding-16">
