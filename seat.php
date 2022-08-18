@@ -26,11 +26,8 @@
 <body class="w3-white ">
     <?php
     include('header.php');
-    // jun movie ma click gara tyo movie to id halde yesma
-    $_SESSION['movie_id'] = 1;
-
     // yo login gardai set gar so that every reserver user_id na hos ani hatta yo
-    $_SESSION['user_id'] = 1;
+    $m_id =$_GET['movie_id']
     ?>
     <div class="w3-white w3-padding-16">
         <div class="w3-center">
@@ -39,9 +36,8 @@
                 echo $conn->error;
                 $result = mysqli_query($con,$q_seat);
                 while($seat = mysqli_fetch_assoc($result)){
-                
                     // print_r($seat)
-                    $q_reserever = "select * from reserved_seat where movie_id = ".$_SESSION['movie_id']." and seat_id = ".$seat['id'];
+                    $q_reserever = "SELECT * from reserved_seat where movie_id = ".$m_id." and seat_id = ".$seat['id'];
                     $r_result = mysqli_query($con,$q_reserever);
                     // echo $q_reserever;
                     // echo $con->error;
@@ -80,8 +76,8 @@
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Green=available&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Red=reserved</p>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected seats:<span id="selectedSeatsID"></span></p>
         <input type="text" name="seat_name" placeholder="input seat number">
-        <input type="hidden" name="movie_id" value="<?= $_SESSION['movie_id'] ?>">
-        <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+        <input type="hidden" name="movie_id" value="<?= $m_id ?>">
+        <input type="hidden" name="user_id" value="<?= $_SESSION['user'] ?>">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="w3-button w3-white w3-border w3-border-red w3-round-large" type="submit" name="submitbutton" id="submitbutton">Confirm</button>
     </form>
     <script>

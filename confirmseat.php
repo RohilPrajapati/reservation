@@ -16,10 +16,10 @@
         echo $q_insert_reserve;
         if(mysqli_query($con,$q_insert_reserve)){
             echo "Seat reserved";
-            header("location:seat.php");
+            header("location:seat.php?movie_id=".$movie_id);
         }else{
             echo "fail to reserved";
-            header("location:seat.php");
+            header("location:seat.php?movie_id=".$movie_id);
         }
 
     }

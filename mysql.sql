@@ -26,5 +26,14 @@ create table reserved_seat (
     seat_id int not null,
     foreign key (movie_id) references movie(id),
     foreign key (seat_id) references seat(id),
-    foreign key(user) references user(id)
+    foreign key(user) references tbl_login(id)
 );
+
+create table tbl_login(
+    id int not null auto_increment,
+    username varchar(100) unique not null,
+    password varchar(255) not null,
+    user_type int not null,
+    primary key (id)
+);
+insert into tbl_login values(1,rohil,prajapati,1);
